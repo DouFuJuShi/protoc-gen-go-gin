@@ -13,7 +13,7 @@ message UserReply {
   string NickName = 2;
 }
 
-service UserHttpServer {
+service User {
   rpc GetInfo(UserRequest) returns (UserReply) {
     option (google.api.http) = {
       get: "/v1/user/info"

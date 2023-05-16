@@ -28,7 +28,7 @@ func main() {
 			if !f.Generate {
 				continue
 			}
-			_ = generateFile(gen, f)
+			_ = NewFileGenerator(gen, f).Exec()
 		}
 		return nil
 	})
