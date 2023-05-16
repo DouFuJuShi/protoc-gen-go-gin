@@ -11,74 +11,43 @@ import (
 //go:embed template.go.tpl
 var serviceTpl string
 
-type Service struct {
-	Name     string
-	FullName string
-	FilePath string
+const interfaceSuffix = "HTTPServer"
 
-	Methods   []*method
-	MethodSet map[string]*method
+type ServiceTemplate struct {
+	Name string
+	// FullName string
+	// FilePath string
+	Methods   []*MethodTemplate
+	MethodSet map[string]*MethodTemplate
 }
 
-func (s *Service) execute() string {
-	if s.MethodSet == nil {
-		s.MethodSet = map[string]*method{}
-		for _, m := range s.Methods {
-			m := m
-			s.MethodSet[m.Name] = m
-		}
-	}
-	buf := new(bytes.Buffer)
+func (s *ServiceTemplate) Interface() string {
+	return fmt.Sprintf("%s%s", s.Name, interfaceSuffix)
+}
+
+func (s *ServiceTemplate) AddMethod(method *MethodTemplate) {
+	s.Methods = append(s.Methods, method)
+}
+
+func (s *ServiceTemplate) String() string {
 	tmpl, err := template.New("http").Parse(strings.TrimSpace(serviceTpl))
 	if err != nil {
 		panic(err)
 	}
-	if err := tmpl.Execute(buf, s); err != nil {
+	buffer := new(bytes.Buffer)
+	if err := tmpl.Execute(buffer, s); err != nil {
 		panic(err)
 	}
-	return buf.String()
+	return buffer.String()
 }
 
-// InterfaceName Service interface name
-func (s *Service) InterfaceName() string {
-	return s.Name + "HTTPServer"
-}
-
-type method struct {
-	Name    string // SayHello
-	Num     int    // 一个 rpc 方法可以对应多个 http 请求
-	Request string // SayHelloReq
-	Reply   string // SayHelloResp
-	// http_rule
-	Path         string // 路由
-	Method       string // HTTP Method
+type MethodTemplate struct {
+	Name         string
+	Num          int
+	Request      string
+	Reply        string
+	Path         string
+	Method       string
 	Body         string
 	ResponseBody string
-}
-
-// HandlerName for gin handler name
-func (m *method) HandlerName() string {
-	return fmt.Sprintf("%s_%d", m.Name, m.Num)
-}
-
-// HasPathParams 是否包含路由参数
-func (m *method) HasPathParams() bool {
-	paths := strings.Split(m.Path, "/")
-	for _, p := range paths {
-		if len(p) > 0 && (p[0] == '{' && p[len(p)-1] == '}' || p[0] == ':') {
-			return true
-		}
-	}
-	return false
-}
-
-// initPathParams 转换参数路由 {xx} --> :xx
-func (m *method) initPathParams() {
-	paths := strings.Split(m.Path, "/")
-	for i, p := range paths {
-		if len(p) > 0 && (p[0] == '{' && p[len(p)-1] == '}' || p[0] == ':') {
-			paths[i] = ":" + p[1:len(p)-1]
-		}
-	}
-	m.Path = strings.Join(paths, "/")
 }

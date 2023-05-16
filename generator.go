@@ -3,6 +3,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"github.com/DouFuJuShi/protoc-gen-go-gin/template"
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
@@ -27,12 +28,29 @@ func (g FileGenerator) Exec() error {
 		return nil
 	}
 
-	for _, service := range g.ProtoFile.Services {
-		_ = service
+	for _, s := range g.ProtoFile.Services {
+		g.genService(s)
 	}
 
 	g.after()
 	return nil
+}
+
+func (g FileGenerator) genService(s *protogen.Service) {
+	st := template.ServiceTemplate{
+		Name: s.GoName,
+	}
+
+	for _, m := range s.Methods {
+		st.AddMethod(&template.MethodTemplate{
+			Name:    m.GoName,
+			Request: m.Input.GoIdent.GoName,
+			Reply:   m.Output.GoIdent.GoName,
+		})
+	}
+
+	// st.AddMethod()
+	g.generatedFile.P(st.String())
 }
 
 func (g FileGenerator) before() {
