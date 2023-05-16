@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "github.com/DouFuJuShi/protoc-gen-go-gin/examples/api/user/v1";
+
+import "google/api/annotations.proto";
+
+message UserRequest {
+  string UserId = 1;
+}
+
+message UserReply {
+  string UserId = 1;
+  string NickName = 2;
+}
+
+service UserHttpServer {
+  rpc GetInfo(UserRequest) returns (UserReply) {
+    option (google.api.http) = {
+      get: "/v1/user/info"
+      additional_bindings {
+        get: "/v1/user/{user_id}/info"
+      }
+    };
+  }
+}
