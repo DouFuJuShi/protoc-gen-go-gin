@@ -22,6 +22,7 @@ type FileGenerator struct {
 
 func (g FileGenerator) Exec() error {
 	g.before()
+
 	if len(g.ProtoFile.Services) == 0 {
 		return nil
 	}
