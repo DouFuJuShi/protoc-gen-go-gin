@@ -13,6 +13,17 @@ var serviceTpl string
 
 const interfaceSuffix = "HTTPServer"
 
+type MethodTemplate struct {
+	Name         string
+	Num          int
+	Request      string
+	Reply        string
+	Path         string
+	HttpMethod   string
+	Body         string
+	ResponseBody string
+}
+
 type ServiceTemplate struct {
 	Name string
 	// FullName string
@@ -39,15 +50,4 @@ func (s *ServiceTemplate) String() string {
 		panic(err)
 	}
 	return buffer.String()
-}
-
-type MethodTemplate struct {
-	Name         string
-	Num          int
-	Request      string
-	Reply        string
-	Path         string
-	Method       string
-	Body         string
-	ResponseBody string
 }

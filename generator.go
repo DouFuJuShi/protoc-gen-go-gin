@@ -4,7 +4,9 @@ import (
 	_ "embed"
 	"fmt"
 	"github.com/DouFuJuShi/protoc-gen-go-gin/template"
+	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/proto"
 )
 
 const (
@@ -42,10 +44,17 @@ func (g FileGenerator) genService(s *protogen.Service) {
 	}
 
 	for _, m := range s.Methods {
+		rule, ok := proto.GetExtension(m.Desc.Options(), annotations.E_Http).(*annotations.HttpRule)
+		if !ok || rule == nil {
+			continue
+		}
+
 		st.AddMethod(&template.MethodTemplate{
-			Name:    m.GoName,
-			Request: m.Input.GoIdent.GoName,
-			Reply:   m.Output.GoIdent.GoName,
+			Name:       m.GoName,
+			Request:    m.Input.GoIdent.GoName,
+			Reply:      m.Output.GoIdent.GoName,
+			Path:       m.GoName,
+			HttpMethod: "GET",
 		})
 	}
 
