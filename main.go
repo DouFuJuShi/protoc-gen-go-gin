@@ -10,25 +10,25 @@ import (
 const version = "0.0.0"
 
 func main() {
-	showVersion := flag.Bool("version", false, "print the version and exit")
+	versionFlag := flag.Bool("version", false, "print the version and exit")
 	flag.Parse()
-	if *showVersion {
-		fmt.Printf("protoc-gen-go-gin %v\n", version)
+	if *versionFlag {
+		fmt.Println("protoc-gen-go-gin")
+		fmt.Println(fmt.Sprintf("current version: %v", version))
 		return
 	}
+
 	var flags flag.FlagSet
 
-	options := protogen.Options{
+	protogen.Options{
 		ParamFunc: flags.Set,
-	}
-
-	options.Run(func(gen *protogen.Plugin) error {
+	}.Run(func(gen *protogen.Plugin) error {
 		gen.SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
 		for _, f := range gen.Files {
 			if !f.Generate {
 				continue
 			}
-			// generateFile(gen, f)
+			_ = generateFile(gen, f)
 		}
 		return nil
 	})
