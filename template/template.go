@@ -25,9 +25,7 @@ type MethodTemplate struct {
 }
 
 type ServiceTemplate struct {
-	Name string
-	// FullName string
-	// FilePath string
+	Name      string
 	Methods   []*MethodTemplate
 	MethodSet map[string]*MethodTemplate
 }
