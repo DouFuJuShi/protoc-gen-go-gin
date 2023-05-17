@@ -14,7 +14,7 @@ protoc \
     ./examples/api/user/v1/user.proto
 ```
 
-## about protoc-go-inject-tag
+## About protoc-go-inject-tag
 [protoc-go-inject-tag](https://github.com/favadi/protoc-go-inject-tag)
 
 ```shell
