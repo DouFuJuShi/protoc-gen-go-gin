@@ -24,6 +24,16 @@ type MethodTemplate struct {
 	ResponseBody string
 }
 
+func (m MethodTemplate) ShouldBindUri() bool {
+	params := strings.Split(m.Path, "/")
+	for _, p := range params {
+		if len(p) > 0 && (p[0] == ':' || p[0] == '*') {
+			return true
+		}
+	}
+	return false
+}
+
 type ServiceTemplate struct {
 	Name      string
 	Methods   []*MethodTemplate
