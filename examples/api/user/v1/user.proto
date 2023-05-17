@@ -5,6 +5,7 @@ option go_package = "github.com/DouFuJuShi/protoc-gen-go-gin/examples/api/user/v
 import "google/api/annotations.proto";
 
 message UserRequest {
+  // @gotags: form:"title"
   string UserId = 1;
 }
 

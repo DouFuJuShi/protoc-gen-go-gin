@@ -1,9 +1,14 @@
 type {{$.Interface}} interface {
-    {{range .Methods}}
+{{range .Methods}}
     {{.Name}}(context.Context, *{{.Request}}) (*{{.Reply}}, error)
-    {{end}}
+{{end}}
 }
 
 func Register{{$.Interface}}(router gin.IRouter, srv {{$.Interface}}) {
-    router.
+{{range .Methods}}
+    router.{{.HttpMethod}}("{{.Path}}", func(c *gin.Context) {
+        var in {{.Request}}
+        fmt.Println(in)
+    })
+{{end}}
 }
