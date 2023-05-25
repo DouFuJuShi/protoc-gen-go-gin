@@ -91,6 +91,6 @@ func RegisterUserHTTPServer(router gin.IRouter, srv UserHTTPServer) {
 		}
 
 		ctx.PureJSON(http.StatusOK, out)
-	})
+	}).Use()
 
 }
