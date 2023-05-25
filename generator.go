@@ -97,7 +97,7 @@ func (g FileGenerator) before() {
 	// 这里是为了程序编译的时候确保这些包是正确的
 	g.generatedFile.P("// ", ctxPKG.Ident(""))
 	g.generatedFile.P("// ", ginPKG.Ident(""))
-	// g.generatedFile.P("// ", errsPKG.Ident(""))
+	g.generatedFile.P("// ", errsPKG.Ident(""))
 	g.generatedFile.P("// ", httpPKG.Ident(""))
 	g.generatedFile.P("// ", metaPKG.Ident(""))
 	g.generatedFile.P()
