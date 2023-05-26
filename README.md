@@ -45,3 +45,7 @@ type UserRequest struct {
     UserId string `protobuf:"bytes,1,opt,name=UserId,proto3" json:"UserId,omitempty" form:"title" uri:"id"`
 }
 ```
+
+## Reference
+[kratos/protoc-gen-go-http](https://github.com/go-kratos/kratos/tree/main/cmd/protoc-gen-go-http)
+[mohuishou/protoc-gen-go-gin](https://github.com/mohuishou/protoc-gen-go-gin)
