@@ -81,7 +81,7 @@ func (g FileGenerator) genService(s *protogen.Service) {
 			request = ""
 		}
 
-		var reply = m.Input.GoIdent.GoName
+		var reply = m.Output.GoIdent.GoName
 		if m.Output.Desc.FullName() == "google.protobuf.Empty" {
 			reply = ""
 		}

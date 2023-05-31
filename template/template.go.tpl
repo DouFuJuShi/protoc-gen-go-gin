@@ -100,14 +100,14 @@ func (c *{{$.Name}}Controller) {{.Name}}(ctx *gin.Context) {
     newCtx := metadata.NewIncomingContext(ctx, md)
 
 {{if .Reply}}
-    out, err := c.service.{{.Name}}(newCtx, &in)
+    out, err := c.service.{{.Name}}(newCtx{{if .Request}}, &in{{end}})
     if err != nil {
         c.resp.ParamsError(ctx, err)
         return
     }
     c.resp.Success(ctx, out)
 {{- else}}
-    err := c.service.{{.Name}}(newCtx)
+    err := c.service.{{.Name}}(newCtx{{if .Request}}, &in{{end}})
     if err != nil {
         c.resp.ParamsError(ctx, err)
         return
