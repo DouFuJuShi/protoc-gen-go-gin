@@ -76,10 +76,20 @@ func (g FileGenerator) genService(s *protogen.Service) {
 			method = pattern.Custom.Kind
 		}
 
+		var request = m.Input.GoIdent.GoName
+		if m.Input.Desc.FullName() == "google.protobuf.Empty" {
+			request = ""
+		}
+
+		var reply = m.Input.GoIdent.GoName
+		if m.Output.Desc.FullName() == "google.protobuf.Empty" {
+			reply = ""
+		}
+
 		st.AddMethod(&template.MethodTemplate{
 			Name:       m.GoName,
-			Request:    m.Input.GoIdent.GoName,
-			Reply:      m.Output.GoIdent.GoName,
+			Request:    request,
+			Reply:      reply,
 			Path:       path,
 			HttpMethod: method,
 		})

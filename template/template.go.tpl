@@ -1,6 +1,6 @@
 type {{$.Interface}} interface {
 {{range .Methods}}
-    {{.Name}}(context.Context, *{{.Request}}) (*{{.Reply}}, error)
+    {{.Name}}(context.Context{{if .Request}}, *{{.Request}}{{end}}) {{if .Reply}}(*{{.Reply}}, error){{else}}error{{end}}
 {{- end}}
 }
 
@@ -24,18 +24,18 @@ func (resp default{{$.Name}}Resp) Error(ctx *gin.Context, err error) {
 	code := -1
 	message := "未知错误"
 
-	type apiError interface {
+	type iResponse interface {
 		HttpStatus() int
 		Code() int
 		Message() string
 	}
 
-	var ae apiError
+	var iResp iResponse
 	if err != nil {
-		if errors.As(err, &ae) {
-			httpStatus = ae.HttpStatus()
-			code = ae.Code()
-			message = ae.Message()
+		if errors.As(err, &iResp) {
+			httpStatus = iResp.HttpStatus()
+			code = iResp.Code()
+			message = iResp.Message()
 		} else {
 			message += ";" + err.Error()
 		}
@@ -68,6 +68,7 @@ type {{$.Name}}Controller struct {
 
 {{- range .Methods}}
 func (c *{{$.Name}}Controller) {{.Name}}(ctx *gin.Context) {
+{{- if .Request}}
      var in {{.Request}}
     {{if .ShouldBindUri }}
     if err := ctx.ShouldBindUri(&in); err != nil {
@@ -91,27 +92,35 @@ func (c *{{$.Name}}Controller) {{.Name}}(ctx *gin.Context) {
             return
         }
     {{end}}
-
+{{end}}
     md := metadata.New(nil)
     for k, v := range ctx.Request.Header {
         md.Set(k, v...)
     }
     newCtx := metadata.NewIncomingContext(ctx, md)
 
+{{if .Reply}}
     out, err := c.service.{{.Name}}(newCtx, &in)
     if err != nil {
         c.resp.ParamsError(ctx, err)
         return
     }
-
     c.resp.Success(ctx, out)
+{{- else}}
+    err := c.service.{{.Name}}(newCtx)
+    if err != nil {
+        c.resp.ParamsError(ctx, err)
+        return
+    }
+    c.resp.Success(ctx, nil)
+{{- end}}
 }
 {{end}}
 
 func (c *{{$.Name}}Controller) RegisterService() {
-{{range .Methods}}
+{{- range .Methods}}
 		c.router.Handle("{{.HttpMethod}}", "{{.Path}}", c.{{.Name}})
-{{end}}
+{{- end}}
 }
 
 func Register{{$.Interface}}(router gin.IRouter, srv {{$.Interface}}) {
