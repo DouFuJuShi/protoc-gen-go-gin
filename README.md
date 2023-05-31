@@ -51,4 +51,8 @@ type UserRequest struct {
 
 [mohuishou/protoc-gen-go-gin](https://github.com/mohuishou/protoc-gen-go-gin)    
 
+[pbgo: 基于 Protobuf 的框架](https://chai2010.cn/advanced-go-programming-book/ch4-rpc/ch4-07-pbgo.html)
+
+[如何自定义 protoc 插件](https://yusank.github.io/posts/go-protoc-http/)
+
 TKS！！！
