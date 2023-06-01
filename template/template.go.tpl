@@ -53,7 +53,7 @@ func (resp default{{$.Name}}Resp) ParamsError (ctx *gin.Context, err error) {
 }
 
 func (resp default{{$.Name}}Resp) Success(ctx *gin.Context, data interface{}) {
-	resp.Response(ctx, http.StatusOK, 10000, "OK", nil)
+	resp.Response(ctx, http.StatusOK, 10000, "OK", data)
 }
 
 type {{$.Name}}Controller struct {
