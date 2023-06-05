@@ -102,14 +102,14 @@ func (c *{{$.Name}}Controller) {{.Name}}(ctx *gin.Context) {
 {{if .Reply}}
     out, err := c.service.{{.Name}}(newCtx{{if .Request}}, &in{{end}})
     if err != nil {
-        c.resp.ParamsError(ctx, err)
+        c.resp.Error(ctx, err)
         return
     }
     c.resp.Success(ctx, out)
 {{- else}}
     err := c.service.{{.Name}}(newCtx{{if .Request}}, &in{{end}})
     if err != nil {
-        c.resp.ParamsError(ctx, err)
+        c.resp.Error(ctx, err)
         return
     }
     c.resp.Success(ctx, nil)
