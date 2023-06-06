@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "github.com/DouFuJuShi/protoc-gen-go-gin/examples/api/hello/v1;v1";
+
+import "http.proto";
+
+message HelloRequest {
+  // @gotags: form:"title" uri:"id"
+  string UserId = 1;
+}
+
+message HelloReply {
+  string UserId = 1;
+  // @gotags: form:"name"
+  string NickName = 2;
+}
+
+
+service Hello {
+  rpc say(HelloRequest) returns (HelloReply) {
+      option (custom.api.gin) = {
+        get: "/v1/hello/say",
+        auth: true
+      };
+  }
+}

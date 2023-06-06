@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package custom.api;
+
+option go_package = "github.com/DouFuJuShi/custom";
+
+import "google/protobuf/descriptor.proto";
+
+// A custom pattern is used for defining custom HTTP verb.
+message CustomHttpPattern {
+  // The name of this custom HTTP verb.
+  string kind = 1;
+
+  // The path matched by this custom verb.
+  string path = 2;
+}
+
+message HttpRule {
+  string selector = 1;
+
+  oneof pattern {
+    // Maps to HTTP GET. Used for listing and getting information about
+    // resources.
+    string get = 2;
+
+    // Maps to HTTP PUT. Used for replacing a resource.
+    string put = 3;
+
+    // Maps to HTTP POST. Used for creating a resource or performing an action.
+    string post = 4;
+
+    // Maps to HTTP DELETE. Used for deleting a resource.
+    string delete = 5;
+
+    // Maps to HTTP PATCH. Used for updating a resource.
+    string patch = 6;
+
+    // The custom pattern is used for specifying an HTTP method that is not
+    // included in the `pattern` field, such as HEAD, or "*" to leave the
+    // HTTP method unspecified for this rule. The wild-card rule is useful
+    // for services that provide content to Web (HTML) clients.
+    CustomHttpPattern custom = 8;
+  }
+
+  bool auth = 7;
+}
+
+message ServiceOptions {
+  string rename = 1;
+}
+
+extend google.protobuf.ServiceOptions {
+  ServiceOptions service_opt = 20230606;
+}
+
+extend google.protobuf.MethodOptions {
+  HttpRule gin = 20230606;
+}
