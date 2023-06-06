@@ -42,18 +42,18 @@ func (resp defaultUserResp) Error(ctx *gin.Context, err error) {
 	code := -1
 	message := "未知错误"
 
-	type apiError interface {
+	type iResponse interface {
 		HttpStatus() int
 		Code() int
 		Message() string
 	}
 
-	var ae apiError
+	var iResp iResponse
 	if err != nil {
-		if errors.As(err, &ae) {
-			httpStatus = ae.HttpStatus()
-			code = ae.Code()
-			message = ae.Message()
+		if errors.As(err, &iResp) {
+			httpStatus = iResp.HttpStatus()
+			code = iResp.Code()
+			message = iResp.Message()
 		} else {
 			message += ";" + err.Error()
 		}
@@ -71,7 +71,7 @@ func (resp defaultUserResp) ParamsError(ctx *gin.Context, err error) {
 }
 
 func (resp defaultUserResp) Success(ctx *gin.Context, data interface{}) {
-	resp.Response(ctx, http.StatusOK, 10000, "OK", nil)
+	resp.Response(ctx, http.StatusOK, 10000, "OK", data)
 }
 
 type UserController struct {
@@ -100,10 +100,9 @@ func (c *UserController) GetInfo(ctx *gin.Context) {
 
 	out, err := c.service.GetInfo(newCtx, &in)
 	if err != nil {
-		c.resp.ParamsError(ctx, err)
+		c.resp.Error(ctx, err)
 		return
 	}
-
 	c.resp.Success(ctx, out)
 }
 
@@ -128,10 +127,9 @@ func (c *UserController) GetInfo2(ctx *gin.Context) {
 
 	out, err := c.service.GetInfo2(newCtx, &in)
 	if err != nil {
-		c.resp.ParamsError(ctx, err)
+		c.resp.Error(ctx, err)
 		return
 	}
-
 	c.resp.Success(ctx, out)
 }
 
@@ -156,21 +154,16 @@ func (c *UserController) GetInfo3(ctx *gin.Context) {
 
 	out, err := c.service.GetInfo3(newCtx, &in)
 	if err != nil {
-		c.resp.ParamsError(ctx, err)
+		c.resp.Error(ctx, err)
 		return
 	}
-
 	c.resp.Success(ctx, out)
 }
 
 func (c *UserController) RegisterService() {
-
 	c.router.Handle("GET", "/v1/user/info", c.GetInfo)
-
 	c.router.Handle("GET", "/v1/user/info/:id/*action", c.GetInfo2)
-
 	c.router.Handle("POST", "/v1/user/info/:id", c.GetInfo3)
-
 }
 
 func RegisterUserHTTPServer(router gin.IRouter, srv UserHTTPServer) {
