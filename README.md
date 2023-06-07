@@ -27,9 +27,11 @@ message UserContent {
 }
 ```
 
-2. [Custom Options](https://protobuf.dev/programming-guides/proto2/#customoptions)
+2. [Custom Options](https://protobuf.dev/programming-guides/proto2/#customoptions)      
+
 Protocol Buffers允许定义和使用自己的选项。请注意，这是大多数人不需要的高级功能。
-由于选项是由 google/protobuf/descriptor.proto 中定义的消息定义的（如 FileOptions 或 FieldOptions），定义您自己的选项只是扩展这些消息的问题。例如：
+由于选项是由 google/protobuf/descriptor.proto 中定义的消息定义的（如 FileOptions 或 FieldOptions），    
+定义您自己的选项只是扩展这些消息的问题。例如：
 
 ```protobuf
 import "google/protobuf/descriptor.proto";
@@ -118,6 +120,24 @@ message OtherMessage {
 }
 ```
 
+3. 自定义http Option   
+3.1 利用google预定义的Option   https://github.com/googleapis/googleapis   
+下载以下两个文件到一个目录下，在执行protoc时候通过-I指定目录，能够使其他proto文件import   
+[google/api/annotations.proto](https://github.com/googleapis/googleapis/blob/master/google/api/annotations.proto)   
+[google/api/http.proto](https://github.com/googleapis/googleapis/blob/master/google/api/http.proto)   
+
+3.2 完全自定义Option   
+    参考custom/http.proto;
+```shell
+// 运行以下 生成http.pb.go 这个文件需要能够后期被引用到
+// 如果没安装protoc-gen-go插件 用go install安装
+// go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+protoc --go_out .  --go_opt=paths=source_relative ./custom/http.proto
+```
+
+4. 编写插件
+
+
 ## protoc-gen-go-gin
 ```shell
 # install 
@@ -141,12 +161,12 @@ protoc \
 go install https://github.com/favadi/protoc-go-inject-tag@latest
 
 # inject tags
-protoc-go-inject-tag -input=user.pb.go
+protoc-go-inject-tag -input=hello.pb.go
 ```
 
 ```protobuf
 // user.proto
-message UserRequest {
+message HelloRequest {
     // @gotags: form:"title" uri:"id"
     string UserId = 1;
 }
@@ -155,7 +175,7 @@ message UserRequest {
 ```go
 // user.pb.go
 // see UserId's struct tags
-type UserRequest struct {
+type HelloRequest struct {
     state         protoimpl.MessageState
     sizeCache     protoimpl.SizeCache
     unknownFields protoimpl.UnknownFields
