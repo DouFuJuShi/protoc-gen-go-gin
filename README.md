@@ -47,6 +47,10 @@ type UserRequest struct {
 ```
 
 ## Reference
+[proto options](https://protobuf.dev/programming-guides/proto3/#options)   
+
+[protocolbuffers/protobuf-go/](https://pkg.go.dev/google.golang.org/protobuf/compiler/protogen)    
+
 [kratos/protoc-gen-go-http](https://github.com/go-kratos/kratos/tree/main/cmd/protoc-gen-go-http)    
 
 [mohuishou/protoc-gen-go-gin](https://github.com/mohuishou/protoc-gen-go-gin)    
