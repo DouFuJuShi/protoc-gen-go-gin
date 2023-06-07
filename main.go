@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 	if *versionFlag {
 		fmt.Println("protoc-gen-go-gin")
-		fmt.Println(fmt.Sprintf("current version: %v", version))
+		fmt.Printf("current version: %v\n", version)
 		return
 	}
 
