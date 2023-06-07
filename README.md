@@ -136,7 +136,7 @@ protoc --go_out .  --go_opt=paths=source_relative ./custom/http.proto
 ```
 
 4. 编写插件
-
+插件库 https://pkg.go.dev/google.golang.org/protobuf/compiler/protogen
 
 ## protoc-gen-go-gin
 ```shell
