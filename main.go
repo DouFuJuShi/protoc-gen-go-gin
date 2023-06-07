@@ -22,13 +22,13 @@ func main() {
 
 	protogen.Options{
 		ParamFunc: flags.Set,
-	}.Run(func(gen *protogen.Plugin) error {
-		gen.SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
-		for _, f := range gen.Files {
+	}.Run(func(plugin *protogen.Plugin) error {
+		plugin.SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+		for _, f := range plugin.Files {
 			if !f.Generate {
 				continue
 			}
-			_ = NewFileGenerator(gen, f).Exec()
+			_ = NewFileGenerator(plugin, f).Exec()
 		}
 		return nil
 	})
