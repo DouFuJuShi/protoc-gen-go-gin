@@ -4,18 +4,18 @@ option go_package = "github.com/DouFuJuShi/protoc-gen-go-gin/examples/api/user/v
 
 import "google/api/annotations.proto";
 
-message UserRequest {
+message HelloRequest {
   // @gotags: form:"title" uri:"id"
   string UserId = 1;
 }
 
-message UserReply {
+message HelloReply {
   string UserId = 1;
   string NickName = 2;
 }
 
 service User {
-  rpc GetInfo(UserRequest) returns (UserReply) {
+  rpc GetInfo(HelloRequest) returns (HelloReply) {
     option (google.api.http) = {
       get: "/v1/user/info"
 //      additional_bindings {
@@ -24,13 +24,13 @@ service User {
     };
   }
 
-  rpc GetInfo2(UserRequest) returns (UserReply) {
+  rpc GetInfo2(HelloRequest) returns (HelloReply) {
     option (google.api.http) = {
       get: "/v1/user/info/:id/*action"
     };
   }
 
-  rpc GetInfo3(UserRequest) returns (UserReply) {
+  rpc GetInfo3(HelloRequest) returns (HelloReply) {
     option (google.api.http) = {
       post: "/v1/user/info/:id"
     };
