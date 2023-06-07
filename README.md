@@ -128,8 +128,8 @@ message OtherMessage {
 
 两个文件proto通过protoc的go代码 在 google.golang.org/genproto/googleapis/api/annotations    
 
-3.2 完全自定义Option   
-    参考custom/http.proto;
+3.2 完全自定义Option [参考custom/http.proto]
+
 ```shell
 // 运行以下 生成http.pb.go 这个文件需要能够后期被引用到
 // 如果没安装protoc-gen-go插件 用go install安装
