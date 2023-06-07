@@ -126,6 +126,7 @@ message OtherMessage {
 [google/api/annotations.proto](https://github.com/googleapis/googleapis/blob/master/google/api/annotations.proto)   
 [google/api/http.proto](https://github.com/googleapis/googleapis/blob/master/google/api/http.proto)   
 
+两个文件proto通过protoc的go代码 在 google.golang.org/genproto/googleapis/api/annotations
 3.2 完全自定义Option   
     参考custom/http.proto;
 ```shell
