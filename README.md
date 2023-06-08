@@ -29,9 +29,9 @@ message UserContent {
 
 2. [Custom Options](https://protobuf.dev/programming-guides/proto2/#customoptions)      
 
-Protocol Buffers允许定义和使用自己的选项。请注意，这是大多数人不需要的高级功能。
-由于选项是由 google/protobuf/descriptor.proto 中定义的消息定义的（如 FileOptions 或 FieldOptions），    
-定义您自己的选项只是扩展这些消息的问题。例如：
+Protocol Buffers允许定义和使用自己的选项。但是这是大多数人不需要的高级功能。
+由于选项是由 google/protobuf/descriptor.proto 中定义的Message（如 FileOptions 或 FieldOptions），    
+定义自己的选项都只是扩展这些Message。例如：
 
 ```protobuf
 import "google/protobuf/descriptor.proto";
